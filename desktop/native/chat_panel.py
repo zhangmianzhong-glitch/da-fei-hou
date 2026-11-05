@@ -155,10 +155,27 @@ class ChatController(NSObject):
         return self.win
 
     def open_panel(self):
-        """打开对话栏"""
+        """打开对话栏（贴着猴猴显示，并自动聚焦输入框）"""
         self.build_window()
+        # 贴着桌宠窗口摆，不跑太远
+        try:
+            pet_frame = self.pet.win.frame()
+            px = pet_frame.origin.x - 60
+            py = pet_frame.origin.y - 60
+            if px < 0:
+                px = pet_frame.origin.x - 200
+            if py < 0:
+                py = pet_frame.origin.y
+            self.win.setFrameOrigin_((px, py))
+        except Exception:
+            pass
         self.win.makeKeyAndOrderFront_(None)
         NSApplication.sharedApplication().activateIgnoringOtherApps_(True)
+        # 直接可以打字
+        try:
+            self.win.makeFirstResponder_(self.input)
+        except Exception:
+            pass
 
     def close_panel(self):
         """关闭对话栏"""

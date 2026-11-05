@@ -421,8 +421,13 @@ class Pet:
                 self.speak('angry')
                 self.poke_count = 0
             else:
+                # 点猴猴 = 直接开聊，不用再找菜单
                 self.set_state('happy')
                 self.speak('happy')
+                try:
+                    self.chat.open_panel()
+                except Exception:
+                    pass
         else:
             self.dragging = False
             self.set_state('idle')
