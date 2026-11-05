@@ -34,7 +34,17 @@ from AVFoundation import (
     AVSpeechSynthesizer, AVSpeechUtterance,
 )
 
-BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+def resolve_base() -> str:
+    """定位资源根目录：兼容源码运行与 .app bundle 运行"""
+    here = os.path.dirname(os.path.abspath(__file__))
+    # .app bundle: Contents/Resources/da_fei_hou.py -> Resources 就是根
+    if os.path.basename(here) == 'Resources':
+        return here
+    # 源码: desktop/native/ -> 上两级到项目根
+    return os.path.abspath(os.path.join(here, '..', '..'))
+
+
+BASE = resolve_base()
 SPRITES = os.path.join(BASE, 'assets', 'sprites_transparent')
 VOICE_DIR = os.path.join(BASE, 'assets', 'voice')
 

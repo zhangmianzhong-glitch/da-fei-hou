@@ -1,13 +1,15 @@
-# 大猴猴 B站评论模块
-# 用大肥猴的语气自动评论
+#!/usr/bin/env python3
+"""
+大肥猴 — B站评论器
+用大肥猴的语气自动评论/回复，采用真实 API。
+"""
 
 import random
-from typing import Dict, List
 
 
 class DaFeiHouBiliComment:
     """大肥猴 B站评论器"""
-    
+
     def __init__(self, api):
         self.api = api
         self.comment_styles = {
@@ -18,68 +20,66 @@ class DaFeiHouBiliComment:
                 "tmd 这也太有意思了！大王必看！",
             ],
             "funny": [
-                "大王！大肥猴笑死了！😂",
+                "大王！大肥猴笑死了！",
                 "大王！这个段子太逗了！tmd 绝了！",
-                "大王！大肥猴的尾巴都笑掉了！🐒",
+                "大王！大肥猴的尾巴都笑掉了！",
             ],
             "serious": [
                 "大王！这个视频很有深度！",
                 "大王！大肥猴学到了很多东西！",
                 "大王！这个视频值得反复观看！",
             ],
+            "bili": [
+                "大王！小的在B站看到个好东西！",
+                "大王，这个视频太绝了！tmd绝了！",
+                "大王快看！大肥猴发现宝藏了！",
+            ],
         }
-    
-    async def comment_video(self, video_id: str, video_title: str, 
-                            comment_type: str = "auto") -> str:
-        """评论视频"""
-        # 根据视频类型选择评论风格
-        if comment_type == "auto":
-            # 自动选择风格
-            if "搞笑" in video_title or "段子" in video_title:
-                style = "funny"
-            elif "AI" in video_title or "科技" in video_title:
-                style = "serious"
-            else:
-                style = "praise"
-        else:
-            style = comment_type
-        
-        # 随机选择评论
-        comment = random.choice(self.comment_styles.get(style, self.comment_styles["praise"]))
-        
-        # 发送评论
-        result = await self.api.comment_video(video_id, comment)
-        
-        return comment
-    
-    async def reply_comment(self, comment_id: str, reply: str) -> str:
-        """回复评论"""
-        # 用大肥猴的语气回复
-        prefixes = ["大王！ ", "tmd ", "小的觉得 "]
-        suffixes = ["🐒", "🫡", "😝"]
-        
-        styled_reply = f"{random.choice(prefixes)}{reply}{random.choice(suffixes)}"
-        
-        # TODO: 实现回复评论 API
-        return styled_reply
-    
-    async def like_video(self, video_id: str) -> bool:
-        """点赞视频"""
-        result = await self.api.like_video(video_id)
-        return result.get("result") == 0
-    
-    async def coin_video(self, video_id: str, num: int = 1) -> bool:
-        """投币视频"""
-        result = await self.api.coin_video(video_id, num)
-        return result.get("result") == 0
 
+    async def comment_video(self, video_id, video_title="", comment_type="auto"):
+        """在视频下评论（video_id 传 aid）"""
+        style = self._pick_style(video_title, comment_type)
+        comment = random.choice(self.comment_styles[style])
+        ok = await self.api.comment_video(str(video_id), comment)
+        return {"ok": ok, "comment": comment, "style": style}
 
-# 主入口
-if __name__ == "__main__":
-    import asyncio
-    
-    async def test():
-        # TODO: 测试评论功能
-        pass
-    
-    asyncio.run(test())
+    async def reply_comment(self, oid, rpid, reply=""):
+        """回复某条评论（rpid 为目标评论 id）"""
+        text = reply or self._auto_reply()
+        payload = {
+            "oid": str(oid),
+            "type": 1,
+            "message": text,
+            "plat": 1,
+            "parent": str(rpid),
+            "csrf": self.api.cookies.get("bili_jct", ""),
+        }
+        data = await self.api._post(
+            "https://api.bilibili.com/x/v2/reply/add", data=payload)
+        return {"ok": data.get("code") == 0, "reply": text, "raw": data}
+
+    async def like_video(self, video_id):
+        """点赞"""
+        return await self.api.like_video(str(video_id))
+
+    async def coin_video(self, video_id, num=1):
+        """投币"""
+        return await self.api.coin_video(str(video_id), num)
+
+    def _pick_style(self, title, comment_type):
+        if comment_type != "auto":
+            return comment_type if comment_type in self.comment_styles else "praise"
+        if any(k in title for k in ("搞笑", "段子", "沙雕")):
+            return "funny"
+        if any(k in title for k in ("AI", "科技", "财经", "投资")):
+            return "serious"
+        return "praise"
+
+    def _auto_reply(self):
+        pool = [
+            "大王说得对！小的受教了！",
+            "tmd 言之有理！大肥猴记下了！",
+            "大佬牛逼！小的学到了！",
+            "大王英明神武，小的五体投地！",
+        ]
+        return random.choice(pool)
