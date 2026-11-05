@@ -23,6 +23,8 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/assets"
 cp -R "$ROOT/assets/sprites_transparent" "$APP/Contents/Resources/assets/"
 cp -R "$ROOT/assets/voice" "$APP/Contents/Resources/assets/"
 cp "$ROOT/desktop/native/da_fei_hou.py" "$APP/Contents/Resources/da_fei_hou.py"
+cp "$ROOT/desktop/native/chat_panel.py" "$APP/Contents/Resources/chat_panel.py"
+cp "$ROOT/desktop/native/pet_extras.py" "$APP/Contents/Resources/pet_extras.py"
 
 # 图标
 if [ -f "$ROOT/assets/sprites_transparent/idle.png" ]; then

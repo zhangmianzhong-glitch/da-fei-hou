@@ -34,6 +34,9 @@ from AVFoundation import (
     AVSpeechSynthesizer, AVSpeechUtterance,
 )
 
+from chat_panel import ChatController
+from pet_extras import ActivityWatcher, StatusBarManager
+
 def resolve_base() -> str:
     """定位资源根目录：兼容源码运行与 .app bundle 运行"""
     here = os.path.dirname(os.path.abspath(__file__))
@@ -225,6 +228,10 @@ class MenuHandler(NSObject):
             st = random.choice(list(LINES.keys()))
             app.set_state(st)
             app.speak(st)
+        elif key == 'chat':
+            app.chat.toggle_panel()
+        elif key == 'clickthrough':
+            app.toggle_clickthrough()
         elif key == 'tts':
             app.tts_enabled = not app.tts_enabled
             if not app.tts_enabled:
@@ -296,6 +303,16 @@ class Pet:
         self.build_window()
         self.build_menu()
 
+        # 优化模块：对话栏 / 状态栏 / 键鼠感知
+        self.chat = ChatController.alloc().initWithPet_(self)
+        self.status_bar = StatusBarManager(self)
+        self.status_bar.build()
+        self.activity = ActivityWatcher(self)
+        self.activity.start()
+        self.click_through = False
+        self.user_typing_until = 0.0
+        self.user_click_until = 0.0
+
     # ---------- UI ----------
     def build_window(self):
         screen = NSScreen.mainScreen().frame()
@@ -359,10 +376,12 @@ class Pet:
             self.menu.addItem_(item)
 
         add('说话', 'speak')
+        add('对话栏', 'chat')
         add('摸头', 'pat')
         add('喂食', 'feed')
         add('出门溜达', 'walk')
         self.menu.addItem_(NSMenuItem.separatorItem())
+        add('点击穿透', 'clickthrough')
         add('随机状态', 'random')
         self.menu.addItem_(NSMenuItem.separatorItem())
         add('开关语音', 'tts')
@@ -503,9 +522,98 @@ class Pet:
             self.walk_dir = -1
         self.win.setFrameOrigin_((nx, f.origin.y))
 
+    # ---------- 优化模块方法 ----------
+    def toggle_clickthrough(self):
+        # 切换点击穿透：猴猴不再挡大王鼠标
+        self.click_through = not self.click_through
+        try:
+            self.win.setIgnoresMouseEvents_(self.click_through)
+        except Exception:
+            pass
+        if self.click_through:
+            self.show_bubble('（猴猴躲起来了，不挡您）')
+        else:
+            self.show_bubble('（猴猴回来啦！）')
+        try:
+            self.status_bar.rebuild_menu()
+        except Exception:
+            pass
+
+    def speak_reply(self, text):
+        # AI 回复：冒泡 + 念出来
+        try:
+            self.show_bubble(text[:36])
+            self.voice.stop()
+            self.voice.say_tts(text)
+        except Exception:
+            pass
+
+    def on_user_typing(self):
+        # 大王在敲键盘 -> 猴猴在旁边伺候
+        self.user_typing_until = time.time() + 6.0
+        if self.state in ('idle', 'fishing'):
+            self.set_state('thinking')
+
+    def on_user_click(self):
+        # 大王点鼠标 -> 猴猴跳过来看
+        self.user_click_until = time.time() + 2.5
+        if self.state in ('idle', 'fishing'):
+            self.set_state('surprise')
+
+    # ---------- 状态栏动作 ----------
+    def bar_action_speak(self):
+        self.speak(self.state)
+
+    def bar_action_chat(self):
+        self.chat.toggle_panel()
+
+    def bar_action_pat(self):
+        self.set_state('heart')
+        self.speak('heart')
+
+    def bar_action_feed(self):
+        self.set_state('eating')
+        self.speak('eating')
+
+    def bar_action_walk(self):
+        self.start_walk(force=True)
+
+    def bar_action_clickthrough(self):
+        self.toggle_clickthrough()
+
+    def bar_action_tts(self):
+        self.tts_enabled = not self.tts_enabled
+        if not self.tts_enabled:
+            self.voice.stop()
+
+    def bar_action_random(self):
+        st = random.choice(list(LINES.keys()))
+        self.set_state(st)
+        self.speak(st)
+
+    def bar_action_quit(self):
+        NSApplication.sharedApplication().terminate_(None)
+
     # ---------- 主循环 ----------
     def tick(self):
         self.phase += 0.06
+
+        # 对话栏 AI 回复
+        try:
+            self.chat.drain()
+        except Exception:
+            pass
+
+        # 键鼠感知
+        try:
+            if (self.activity.typing_recently()
+                    and self.state in ('idle', 'fishing')):
+                self.set_state('thinking')
+            elif (self.activity.click_recently()
+                    and self.state in ('idle', 'fishing')):
+                self.set_state('surprise')
+        except Exception:
+            pass
 
         try:
             while True:
