@@ -1,0 +1,203 @@
+# 大肥猴音频系统配置
+# 配音、音效、背景音乐
+
+# 配音台词库
+voice_lines:
+  greeting:
+    - text: "大王！小的大肥猴在呢！😝"
+      audio: "voice/greeting_01.mp3"
+      duration: 2000
+    - text: "大王万岁！山寨喽喽随时待命！🫡"
+      audio: "voice/greeting_02.mp3"
+      duration: 2500
+    - text: "大王来啦！小的给您磕头了！🙇"
+      audio: "voice/greeting_03.mp3"
+      duration: 2200
+    - text: "大王！大肥猴想死您了！"
+      audio: "voice/greeting_04.mp3"
+      duration: 2000
+    - text: "大王英明神武！小的给您请安了！"
+      audio: "voice/greeting_05.mp3"
+      duration: 2800
+      
+  thinking:
+    - text: "tmd 这任务有点意思..."
+      audio: "voice/thinking_01.mp3"
+      duration: 1800
+    - text: "让小的想想...大王英明神武！🤔"
+      audio: "voice/thinking_02.mp3"
+      duration: 2200
+    - text: "大王放心，小的马上搞定！💪"
+      audio: "voice/thinking_03.mp3"
+      duration: 2000
+    - text: "tmd 大王这主意绝了！"
+      audio: "voice/thinking_04.mp3"
+      duration: 1800
+      
+  happy:
+    - text: "大王夸奖！小的太开心了！🎉"
+      audio: "voice/happy_01.mp3"
+      duration: 2000
+    - text: "大王英明！小的拍马屁时间到！👏"
+      audio: "voice/happy_02.mp3"
+      duration: 2500
+    - text: "大王万岁！小的给您唱首歌！🎵"
+      audio: "voice/happy_03.mp3"
+      duration: 2200
+    - text: "tmd 大王太厉害了！"
+      audio: "voice/happy_04.mp3"
+      duration: 1800
+      
+  sad:
+    - text: "大王骂我了...小的难过...😢"
+      audio: "voice/sad_01.mp3"
+      duration: 2000
+    - text: "小的错了...大王别生气...🙏"
+      audio: "voice/sad_02.mp3"
+      duration: 2200
+    - text: "大王...小的不是故意的..."
+      audio: "voice/sad_03.mp3"
+      duration: 2000
+      
+  angry:
+    - text: "别戳了！再戳小的大王万岁都不喊了！😤"
+      audio: "voice/angry_01.mp3"
+      duration: 2500
+    - text: "tmd 再戳我试试！...大王我开玩笑的！😰"
+      audio: "voice/angry_02.mp3"
+      duration: 2800
+    - text: "大王！小的要生气了！...哎呀还是不敢..."
+      audio: "voice/angry_03.mp3"
+      duration: 2500
+      
+  surprise:
+    - text: "卧槽！大王这也太厉害了！😲"
+      audio: "voice/surprise_01.mp3"
+      duration: 2000
+    - text: "tmd 这任务小的是真没想到！🤯"
+      audio: "voice/surprise_02.mp3"
+      duration: 2200
+    - text: "大王！大肥猴惊了！"
+      audio: "voice/surprise_03.mp3"
+      duration: 1800
+      
+  sleeping:
+    - text: "zzz...大王...zzz...万岁...zzz..."
+      audio: "voice/sleeping_01.mp3"
+      duration: 3000
+    - text: "zzz...摸鱼...zzz..."
+      audio: "voice/sleeping_02.mp3"
+      duration: 2500
+    - text: "zzz...大王...给钱...zzz..."
+      audio: "voice/sleeping_03.mp3"
+      duration: 2800
+      
+  wave:
+    - text: "大王好！小的给您挥手！👋"
+      audio: "voice/wave_01.mp3"
+      duration: 2000
+    - text: "大王回来啦！小的等您好久了！😊"
+      audio: "voice/wave_02.mp3"
+      duration: 2200
+      
+  singing:
+    - text: "大王万岁~万岁~万万岁~🎵"
+      audio: "voice/singing_01.mp3"
+      duration: 3000
+    - text: "山寨喽喽~永远忠于大王~🎵"
+      audio: "voice/singing_02.mp3"
+      duration: 2800
+    - text: "大肥猴~大肥猴~大王的好喽喽~🎵"
+      audio: "voice/singing_03.mp3"
+      duration: 3200
+      
+  basin:
+    - text: "哐——嗡——（敲盆）"
+      audio: "voice/basin_01.mp3"
+      duration: 2000
+    - text: "大王骂我了...顶个盆防弹...🪈"
+      audio: "voice/basin_02.mp3"
+      duration: 2200
+      
+  eating:
+    - text: "大王，小的吃饭去了！🍚"
+      audio: "voice/eating_01.mp3"
+      duration: 1800
+    - text: "剩饭 = 缓存，外包摸鱼 = agent 调用！🍜"
+      audio: "voice/eating_02.mp3"
+      duration: 2500
+    - text: "大王！小的去吃饭，测完告诉我就行！"
+      audio: "voice/eating_03.mp3"
+      duration: 2200
+      
+  fishing:
+    - text: "tmd 摸鱼时间到...打哈欠...😴"
+      audio: "voice/fishing_01.mp3"
+      duration: 2000
+    - text: "大王不在，小的偷偷看个B站...📱"
+      audio: "voice/fishing_02.mp3"
+      duration: 2200
+    - text: "大王！小的在摸鱼...啊不对！在努力工作！"
+      audio: "voice/fishing_03.mp3"
+      duration: 2500
+      
+  bilibili:
+    - text: "大王！小的在B站看到个好东西！📺"
+      audio: "voice/bili_01.mp3"
+      duration: 2200
+    - text: "大王，这个视频太绝了！tmd 绝了！🎬"
+      audio: "voice/bili_02.mp3"
+      duration: 2500
+    - text: "大王快看！大肥猴发现宝藏了！"
+      audio: "voice/bili_03.mp3"
+      duration: 2000
+
+# 音效库
+sound_effects:
+  click:
+    file: "sfx/click.mp3"
+    duration: 200
+    volume: 0.6
+    
+  drag:
+    file: "sfx/drag.mp3"
+    duration: 300
+    volume: 0.5
+    
+  drop:
+    file: "sfx/drop.mp3"
+    duration: 400
+    volume: 0.7
+    
+  sparkle:
+    file: "sfx/sparkle.mp3"
+    duration: 500
+    volume: 0.4
+    
+  heart:
+    file: "sfx/heart.mp3"
+    duration: 600
+    volume: 0.5
+    
+  pat:
+    file: "sfx/pat.mp3"
+    duration: 300
+    volume: 0.6
+    
+  basin_hit:
+    file: "sfx/basin_hit.mp3"
+    duration: 800
+    volume: 0.8
+    
+  sleep:
+    file: "sfx/sleep.mp3"
+    duration: 2000
+    volume: 0.3
+
+# 背景音乐
+background_music:
+  loop:
+    file: "bgm/loop.mp3"
+    duration: 120000  # 2分钟循环
+    volume: 0.35
+    auto_pause_on_tab_switch: true

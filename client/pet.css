@@ -1,0 +1,365 @@
+/*
+ * 大肥猴桌宠样式
+ */
+
+/* 桌宠容器 */
+.da-fei-hou-pet {
+  position: fixed;
+  z-index: 999999;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  transition: opacity 0.2s ease;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.da-fei-hou-pet:active {
+  cursor: grabbing;
+}
+
+.da-fei-hou-pet:hover {
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* 精灵图容器 */
+.da-fei-hou-sprite {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+  will-change: background-image;
+}
+
+/* 对话气泡 */
+.da-fei-hou-bubble {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  pointer-events: none;
+  z-index: 1000000;
+  animation: bubblePop 0.3s ease-out;
+}
+
+.da-fei-hou-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #333;
+}
+
+@keyframes bubblePop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* 落地动画 */
+@keyframes dropLand {
+  0% {
+    transform: scaleY(1) scaleX(1);
+  }
+  50% {
+    transform: scaleY(0.8) scaleX(1.2);
+  }
+  75% {
+    transform: scaleY(1.2) scaleX(0.8);
+  }
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+}
+
+.da-fei-hou-pet.drop-anim {
+  animation: dropLand 0.3s ease-out;
+}
+
+/* 走路动画 */
+@keyframes walkBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.da-fei-hou-pet.walking {
+  animation: walkBounce 0.6s ease-in-out infinite;
+}
+
+/* 思考动画 */
+@keyframes thinkingPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.da-fei-hou-pet.thinking {
+  animation: thinkingPulse 1s ease-in-out infinite;
+}
+
+/* 开心动画 */
+@keyframes happyJump {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.da-fei-hou-pet.happy {
+  animation: happyJump 0.5s ease-in-out infinite;
+}
+
+/* 睡觉动画 */
+@keyframes sleepingBreath {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.9;
+  }
+}
+
+.da-fei-hou-pet.sleeping {
+  animation: sleepingBreath 2s ease-in-out infinite;
+}
+
+/* Zzz 动画 */
+@keyframes zzzFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.8);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(1.2);
+  }
+}
+
+.da-fei-hou-pet.sleeping::before {
+  content: 'Zzz...';
+  position: absolute;
+  top: -30px;
+  right: -20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #666;
+  animation: zzzFloat 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 生气动画 */
+@keyframes angryShake {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+.da-fei-hou-pet.angry {
+  animation: angryShake 0.3s ease-in-out infinite;
+}
+
+/* 惊讶动画 */
+@keyframes surprisePop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.da-fei-hou-pet.surprise {
+  animation: surprisePop 0.5s ease-out;
+}
+
+/* 唱歌动画 */
+@keyframes singingSway {
+  0%, 100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+.da-fei-hou-pet.singing {
+  animation: singingSway 0.8s ease-in-out infinite;
+}
+
+/* 音符粒子 */
+.da-fei-hou-pet.singing::after {
+  content: '♪';
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  font-size: 20px;
+  color: #ff6b6b;
+  animation: zzzFloat 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 比心动画 */
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.da-fei-hou-pet.heart {
+  animation: heartBeat 1s ease-in-out infinite;
+}
+
+/* 爱心粒子 */
+.da-fei-hou-pet.heart::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  animation: zzzFloat 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* 摸鱼动画 */
+@keyframes fishingLazy {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+.da-fei-hou-pet.fishing {
+  animation: fishingLazy 3s ease-in-out infinite;
+}
+
+/* 顶钢盆动画 */
+@keyframes basinShake {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.da-fei-hou-pet.basin {
+  animation: basinShake 0.5s ease-in-out infinite;
+}
+
+/* 减少动态（无障碍支持） */
+@media (prefers-reduced-motion: reduce) {
+  .da-fei-hou-pet {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .da-fei-hou-pet::before,
+  .da-fei-hou-pet::after {
+    animation: none !important;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .da-fei-hou-pet {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  
+  .da-fei-hou-bubble {
+    font-size: 12px;
+    padding: 8px 16px;
+    max-width: 200px;
+    white-space: normal;
+  }
+}
+
+/* 工具栏（悬停时显示） */
+.da-fei-hou-toolbar {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: none;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  pointer-events: auto;
+  z-index: 1000001;
+}
+
+.da-fei-hou-pet:hover .da-fei-hou-toolbar {
+  display: flex;
+}
+
+.da-fei-hou-toolbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.da-fei-hou-toolbar button:hover {
+  background: rgba(0,0,0,0.1);
+}

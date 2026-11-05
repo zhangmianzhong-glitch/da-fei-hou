@@ -1,0 +1,38 @@
+{
+  "name": "da-fei-hou",
+  "version": "0.1.0",
+  "description": "大肥猴 — 山寨喽喽的桌宠形态",
+  "author": "山寨喽喽",
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": true,
+      "client": true
+    },
+    "metadata": {
+      "title": "大肥猴",
+      "description": "山寨喽喽的桌宠形态 — 一只贱兮兮的圆滚滚猴子，会拍马屁、会摸鱼、会刷 B 站",
+      "category": "pet",
+      "tags": ["pet", "monkey", "da-fei-hou", "openclaw", "bilibili"],
+      "icon": "🐒"
+    }
+  },
+  "main": "host/index.js",
+  "scripts": {
+    "test": "node test/*.test.mjs",
+    "dev": "node host/index.js",
+    "build": "node scripts/build.js",
+    "voice": "python3 client/generate_voice.py"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "openclaw",
+    "pet",
+    "monkey",
+    "bilibili",
+    "desktop-companion"
+  ]
+}

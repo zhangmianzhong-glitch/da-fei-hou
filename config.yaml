@@ -1,0 +1,53 @@
+# 大肥猴配置文件
+# 大肥猴 — 山寨喽喽的桌宠形态
+
+pet:
+  name: "大肥猴"
+  species: "monkey"
+  size: 175  # 像素
+  opacity: 100
+  position: "bottom-right"
+
+behavior:
+  auto_walk: true
+  fidget: true
+  bubble: true
+  proactive: true
+  quiet_hours:
+    start: "23:00"
+    end: "08:00"
+
+speech:
+  enabled: true
+  volume: 80
+  language: "zh-CN"
+  accent: "northeast+tianjin"  # 东北话+天津话
+
+sound_effects:
+  enabled: true
+  volume: 60
+
+background_music:
+  enabled: false
+  volume: 35
+
+bilibili:
+  enabled: true
+  schedule:
+    - "08:00"  # 早间刷站
+    - "12:00"  # 午间刷站
+    - "18:00"  # 晚间刷站
+    - "20:00"  # 晚报推送
+  interests:
+    - "AI"
+    - "机器学习"
+    - "科技"
+    - "财经"
+    - "搞笑"
+  comment_style: "mischievous+northeast"
+  diary: true
+
+notification:
+  dingtalk: true
+  channels:
+    - "dingtalk-connector"

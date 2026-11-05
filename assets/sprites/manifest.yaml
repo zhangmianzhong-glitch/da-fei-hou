@@ -1,0 +1,203 @@
+# 大肥猴精灵动画配置
+# 18种状态的精灵图定义
+
+sprites:
+  # 基础状态
+  idle:
+    frames: 1
+    duration: 100  # ms per frame
+    loop: true
+    facing: 1  # 1=right, -1=left
+    width: 412
+    height: 344
+    
+  blink:
+    frames: 3
+    duration: 500
+    loop: false
+    facing: 1
+    width: 412
+    height: 344
+    
+  walk_right:
+    frames: 3  # 三帧走路循环：contact, pass, contact
+    duration: 300
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    ground_speed: 2.5  # pixels per frame
+    
+  walk_left:
+    frames: 3
+    duration: 300
+    loop: true
+    facing: -1
+    width: 412
+    height: 344
+    ground_speed: -2.5
+    
+  # 情绪状态
+  happy:
+    frames: 2
+    duration: 500
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  cheer:
+    frames: 2
+    duration: 600
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  speaking:
+    frames: 2
+    duration: 200
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  thinking:
+    frames: 3
+    duration: 800
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  heart:
+    frames: 2
+    duration: 500
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  sad:
+    frames: 1
+    duration: 100
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  angry:
+    frames: 2
+    duration: 400
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  surprise:
+    frames: 2
+    duration: 500
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  sleeping:
+    frames: 3
+    duration: 1000
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  wave:
+    frames: 3
+    duration: 400
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  singing:
+    frames: 4
+    duration: 300
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  # 特色状态
+  basin:
+    frames: 2
+    duration: 600
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  eating:
+    frames: 3
+    duration: 400
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+    
+  fishing:
+    frames: 2
+    duration: 800
+    loop: true
+    facing: 1
+    width: 412
+    height: 344
+
+# 动画行为规则
+animation_behavior:
+  # 待机动作频率
+  idle_fidget:
+    blink_interval: "3-8s"
+    walk_interval: "10-20s"
+    fidget_interval: "20-60s"
+    
+  # 小动作列表
+  fidget_actions:
+    - thinking
+    - basin
+    - eating
+    - singing
+    - cheer
+    - heart
+    - angry
+    
+  # 点击行为
+  click:
+    - action: happy
+      duration: 1000
+    - action: speak
+      category: greeting
+      
+  poke_three_times:
+    - action: angry
+      duration: 3000
+    - action: speak
+      category: angry
+      
+  # 拖拽行为
+  drag:
+    - action: suspended (悬空姿势)
+    
+  drop:
+    - action: squash_and_stretch (压扁弹起)
+    - action: happy
+      duration: 1000
+    - long_drop:
+        sparkle_particles: true
+        
+  # 睡觉
+  sleep_after: "10min"
+  wake_on: ["click", "drag", "task_start"]
+  
+  # 状态衔接
+  state_transition:
+    new_task_interrupts: true  # 新任务可以打断装饰动作
+    complete_animation_first: true  # 点击动作完整播完再恢复
