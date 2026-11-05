@@ -12,7 +12,7 @@ package-lock.json
 # 登录凭据与私密数据（绝对不能提交！）
 data/cookies/
 data/memory/
-data/*.json
+data/
 *.env
 cookies/
 
