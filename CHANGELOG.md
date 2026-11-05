@@ -135,3 +135,52 @@
 - 目标视频：从 LLM 到 Agent Skill，一期视频带你打通底层逻辑！
   https://www.bilibili.com/video/BV1E7wtzaEdq
 - cookies 30 天有效，存 data/cookies/bilibili.json
+
+## 2026-11-05 第三批：真AI分析 + .app 打包 + 全模块实跑
+
+### 新增 bili/ai_analyzer.py —— 真 AI 视频分析
+- 走 MiniMax 的 Anthropic 兼容端点（`https://api.minimaxi.com/anthropic`）
+- API Key 从 `~/.openclaw/.env` 的 MINIMAX_API_KEY 读取（不打印明文）
+- Prompt 里给大肥猴人设：贼兮兮的马屁精助手，输出严格 JSON
+- 实测评分 0.78~0.92，理由自带东北话拍马屁语气
+
+### bili/video_analyzer.py 改为真 AI 优先
+- AI 成功用 AI 的 score/reason/summary/key_points/sentiment/keywords
+- AI 失败回退关键词打分（hits/play/hot_words/comments）
+
+### bili/search.py 重写为真实实现
+- 热门榜、关键词搜索、UP主投稿、推荐流全部委托 bilibili_api
+- 实测：热门榜 3 条 / 关键词搜索 20 条
+
+### bili/comment.py 重写为真实实现
+- comment_video 自动选风格（praise/funny/serious/bili）后真实发评论
+- reply_comment 真实回复接口（带 parent=rpid + csrf）
+- like_video / coin_video 走真实 API
+
+### bili/dingtalk_notifier.py —— 真钉钉推送
+- 用 `openclaw message send --channel dingtalk-connector --target user:<id>` 走本机 Gateway
+- 不需要自己持有钉钉凭据
+- 实测成功：Message ID card_1793858453800_p7m5aw9i
+
+### .app 打包（手搓 bundle）
+- 不用 py2app（0.28 与 Python 3.14 + setuptools 84 不兼容，报 'bool' object has no attribute 'items'）
+- 改用手搓 Contents/{MacOS,Resources} 结构 + Info.plist + ad-hoc codesign
+- 打包脚本：desktop/macapp/build_app.sh
+- 图标用 idle.png 转 icns
+- 坑：PyObjC 装在系统 site-packages，不在 venv 里，启动器必须用系统 python3
+- 坑：脚本要能识别自己在 .app 里（resolve_base() 判断上级目录名是 Resources）
+
+### LaunchAgent 改为跑 .app 内的脚本
+- plist: /Users/zmz/Library/LaunchAgents/com.openclaw.da-fei-hou.plist
+- ProgramArguments = 系统 python3 + 大肥猴.app/Contents/Resources/da_fei_hou.py
+- 坑：launchd 不能直接 exec .app 里的 shell 脚本当 python 跑，必须显式给 python3 + 脚本路径
+- 坑：write 工具写 plist 时路径容易写成 .openclaw/Library/LaunchAgents（多一层），正确是 /Users/zmz/Library/LaunchAgents
+
+### 死代码归档
+- web 预览版（client/index.js, loader.js, audio_player.py, tts.py, renderer.py, host/plugin.js, openclaw_bridge.py）
+- 移到 legacy/web-preview/，原已被原生版 + OpenClaw Hook 取代
+
+### Git
+- git init + 2 次提交（206 文件）
+- .gitignore 屏蔽 cookies/、.env、data/*.json、venv/、node_modules/、dist/
+- 推送脚本：desktop/push_github.sh（需先 gh auth login）
